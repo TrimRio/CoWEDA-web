@@ -1,0 +1,27 @@
+itemNo,bodySection,layer,displayOrderNo,layerConflict,itemDescription,itemWeight_kg,NSN,image,Rcl_head_clo,Rcl_torso_clo,Rcl_arm_clo,Rcl_hand_clo,Rcl_leg_clo,Rcl_foot_clo,Recl_head_m^2Pa/W,Recl_torso_m^2Pa/W,Recl_arm_m^2Pa/W,Recl_hand_m^2Pa/W,Recl_leg_m^2Pa/W,Recl_foot_m^2Pa/W,fcl_head,fcl_torso,fcl_arm,fcl_hand,fcl_leg,fcl_foot,wetCloCoeff
+1,1,0,1,,Goggles,0.11,,Goggles.png,0.06,0,0,0,0,0,4.85,0,0,0,0,0,1,1,1,1,1,1,0.2
+2,1,0,4,,Cold Weather (CW) Cap,0.05,9999,beanie.png,0.28,0,0,0,0,0,4.54,0,0,0,0,0,1,1,1,1,1,1,0.2
+3,1,0,5,,Lightweight Balaclava,0.05,9999,LW Balaclava.png,0.36,0,0,0,0,0,5.63,0,0,0,0,0,1,1,1,1,1,1,0.2
+1,2,4,1,2,Extreme Cold Weather Parka (stowed hood),2.2,9999,parka.png,0,3.692,2.945,0.139,0.011,0,0,65.91,65.41,0.463,0,0,1,1,1,1,1,1,0.2
+2,2,4,2,1,Extreme Cold Weather Parka (freed hood),2.2,9999,parka.png,0.91,3.692,2.945,0.139,0.11,0,29.87,65.91,65.41,0.463,0,0,1,1,1,1,1,1,0.2
+3,2,3,6,,Fleece Cold Weather Jacket,1,9999,fleece jacket.png,0.052,1.05,1.316,0.058,0.006,0.021,0.471,14.195,21.696,0,0.03,0,1,1,1,1,1,1,0.2
+4,2,3,7,,Cold Weather Wind Jacket,0.8,9999,wind cold jacket.png,0,0.701,0.549,0.029,0.008,0.018,0,13.628,16.268,0,0,0,1,1,1,1,1,1,0.2
+5,2,3,9,,Soft Shell Jacket,1.4,9999,soft cold jacket.png,0.03,0.946,0.65,0.023,0.008,0.017,0.086,46.13,55.936,0,0,0,1,1,1,1,1,1,0.2
+6,2,3,11,,Cold Wet Weather Jacket,1.6,9999,cold wet jacket.png,0.019,0.877,0.689,0.041,0.007,0.011,0,34.251,31.805,0,0,0.114,1,1,1,1,1,1,0.2
+7,2,1,22,,Midweight Cold Weather Shirt,0.6,9999,waffle top.png,0.026,0.693,0.68,0.164,0,0.001,0.318,12.962,13.329,0.46,0,0,1,1,1,1,1,1,0.2
+8,2,0,25,,Lightweight Cold Weather Undershirt,0.4,9999,silk top.png,0,0.552,0.414,0.09,0.014,0.013,0,9.86,6.523,0,1.015,0,1,1,1,1,1,1,0.2
+9,2,0,27,,T-Shirt,0.1,,Navy T.png,0,0.639,0.049,0,0.006,0,0.75,17.11,3.93,0,0,0,1,1,1,1,1,1,0.2
+1,3,0,1,,Cold/Wet  Glove,0.3,9999,coldwet glove.png,0,0,0,1.11,0,0,0,0,0,24,0,0,1,1,1,1,1,1,0.2
+2,3,0,4,,Glove Liner,0.3,9999,glove liner.png,0,0,0,0.31,0,0,0,0,0,24,0,0,1,1,1,1,1,1,0.2
+1,4,4,1,,Extreme Cold Weather Trouser,1.8,9999,Extreme Cold Weather Trousers.png,0,0.336,0,0,2.496,0,0,7.407,0,0,69.056,0,1,1,1,1,1,1,0.2
+2,4,3,4,,Soft Shell Trouser,1.4,9999,soft cold bottom.png,0,0.293,0,0,0.752,0,0,8.062,0,0,70.571,0,1,1,1,1,1,1,0.2
+3,4,3,6,, Cold Wet Weather Trouser,1.6,9999,cold-wet-bottoms.png,0,0.201,0,0,0.703,0.018,0,5.576,0,0,39.375,0,1,1,1,1,1,1,0.2
+4,4,1,13,,Midweight Cold Weather Drawers,0.4,9999,waffle bottoms.png,0,0.168,0,0,0.591,0.03,0,3.414,0,0,10.076,0,1,1,1,1,1,1,0.2
+5,4,0,16,,Lightweight Cold Weather Drawers,0.3,9999,silk bottoms.png,0,0.14,0,0,0.336,0.024,0,3.309,0,0,6.811,1.039,1,1,1,1,1,1,0.2
+6,4,0,18,7,MARS Boxer Brief,0.1,9999,LW Boxer Briefs.png,0,0.092,0,0,0.065,0,0,1.14,0,0,1.88,0,1,1,1,1,1,1,0.2
+7,4,0,19,6,Brief,0.1,9999,Briefs.png,0,0.175,0,0,0.052,0,0,1.14,0,0,1.88,0,1,1,1,1,1,1,0.2
+1,5,1,2,2|3,Vapor Barrier Boot,3.3,9999,VB Boot.png,0,0,0,0,0.07,1.34,0,0,0,0,9,100,1,1,1,1,1.06,1.4,0.2
+2,5,1,3,1|3,Sneaker,0.6,9999,Sneaker.png,0,0,0,0,0,0.52,0,0,0,0,0,30,1,1,1,1,1,1.16,0.2
+3,5,1,6,1|2,Cold Weather (CW) Combat Boot,2,9999,cold weather combat boot.png,0,0,0,0,0.11,0.9,0,0,0,0,7.8,175.7,1,1,1,1,1.09,1.27,0.2
+4,5,0,8,9,Lightweight Boot Sock,0.1,,Light Socks.png,0,0,0,0,0.05,0.3,0,0,0,0,3.3,5.7,1,1,1,1,1.04,1.09,0.2
+5,5,0,9,8,Heavyweight Wool Sock,0.2,,Heavy Socks.png,0,0,0,0,0.13,0.33,0,0,0,0,3.3,5.7,1,1,1,1,1.11,1.1,0.2

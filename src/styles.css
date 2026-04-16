@@ -1,0 +1,137 @@
+:root {
+  --navy:   #1B3A4B;
+  --blue:   #2E86AB;
+  --bg:     #F4F6F8;
+  --surface:#FFFFFF;
+  --border: #dde1e5;
+  --text:   #1A1A2E;
+  --muted:  #6b7280;
+  --danger: #D64045;
+  --warn:   #e6a817;
+  --ok:     #4C9A5A;
+}
+
+body {
+  background: var(--bg);
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  color: var(--text);
+  margin: 0;
+}
+
+/* ── Topbar ── */
+.topbar { background: var(--navy); padding: 10px 20px; }
+.topbar .logo { font-size: 14px; font-weight: 600; color: #fff; letter-spacing: 0.05em; }
+.topbar .nav-link { font-size: 12px; color: rgba(255,255,255,0.6); padding: 5px 12px; border-radius: 6px; text-decoration: none; }
+.topbar .nav-link.active { background: rgba(255,255,255,0.15); color: #fff; }
+
+/* ── Cards ── */
+.card { border: 0.5px solid var(--border); border-radius: 12px; background: var(--surface); }
+.card-title-label { font-size: 11px; font-weight: 600; color: var(--navy); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 12px; }
+
+/* ── Slider ── */
+.slider-wrap { position: relative; height: 18px; display: flex; align-items: center; }
+.slider-track { position: absolute; left: 0; right: 0; height: 4px; border-radius: 2px; pointer-events: none; }
+.slider-wrap input[type=range] { position: relative; width: 100%; height: 4px; background: transparent; appearance: none; -webkit-appearance: none; margin: 0; z-index: 1; }
+.slider-wrap input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 14px; border-radius: 50%; background: #fff; border: 2px solid var(--blue); cursor: pointer; }
+.slider-wrap input[type=range]::-moz-range-thumb { width: 14px; height: 14px; border-radius: 50%; background: #fff; border: 2px solid var(--blue); cursor: pointer; }
+
+/* ── Field labels & values ── */
+.field-label { font-size: 11px; color: var(--muted); margin-bottom: 4px; }
+.field-val   { font-size: 13px; font-weight: 600; color: var(--text); min-width: 28px; text-align: right; }
+.field-unit  { font-size: 11px; color: #9ca3af; min-width: 26px; }
+
+/* ── Chips ── */
+.chip { font-size: 11px; padding: 3px 10px; border-radius: 20px; border: 0.5px solid var(--blue); color: var(--blue); cursor: pointer; background: #fff; user-select: none; transition: background 0.15s, color 0.15s; }
+.chip.active { background: var(--blue); color: #fff; }
+
+/* ── Metabolic rate badge ── */
+.met-val { font-size: 13px; font-weight: 600; color: var(--navy); background: #f0f9ff; border: 0.5px solid #bae6fd; border-radius: 6px; padding: 5px 10px; text-align: center; }
+
+/* ── Zone rows (risk assessment) ── */
+.zone-row         { display: flex; align-items: center; justify-content: space-between; padding: 7px 11px; border-radius: 8px; border: 0.5px solid var(--border); background: #f9fafb; }
+.zone-row.crit    { border-color: #fca5a5; background: #fff5f5; }
+.zone-row.warn    { border-color: #fcd34d; background: #fffbeb; }
+.zone-row.ok      { border-color: #bbf7d0; background: #f0fdf4; }
+.zone-row.neutral { border-color: var(--border); background: #f8f9fa; }
+.zone-name        { font-size: 12px; font-weight: 500; }
+.zone-time        { font-size: 12px; font-weight: 600; }
+.zone-time.crit    { color: #A32D2D; }
+.zone-time.warn    { color: #7a5700; }
+.zone-time.ok      { color: #27500A; }
+.zone-time.neutral { color: var(--muted); }
+
+/* ── Risk badges ── */
+.badge-risk    { font-size: 10px; padding: 2px 7px; border-radius: 20px; font-weight: 600; }
+.badge-crit    { background: #fde8e8; color: #A32D2D; }
+.badge-warn    { background: #fef3cd; color: #7a5700; }
+.badge-ok      { background: #dcfce7; color: #27500A; }
+.badge-neutral { background: #f3f4f6; color: var(--muted); }
+
+/* ── Clothing list ── */
+.zone-group-label { font-size: 10px; font-weight: 600; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px; padding-left: 2px; }
+.clothing-row  { display: flex; align-items: center; justify-content: space-between; padding: 6px 10px; border-radius: 7px; border: 0.5px solid var(--border); background: #f9fafb; }
+.clothing-name { font-size: 12px; font-weight: 500; }
+.clothing-ins  { font-size: 10px; color: var(--muted); }
+
+/* ── Ensemble controls ── */
+.btn-danger-soft { font-size: 12px; background: #fff; color: #A32D2D; border: 0.5px solid #fca5a5; border-radius: 6px; padding: 5px 10px; cursor: pointer; white-space: nowrap; }
+.btn-danger-soft:hover { background: #fff5f5; }
+hr.soft { border-color: var(--border); opacity: 1; margin: 12px 0; }
+
+/* ── Silhouette ── */
+.figure-wrap { position: relative; width: 80px; flex-shrink: 0; }
+.figure-wrap svg { display: block; }
+.zone-hit { cursor: pointer; transition: filter 0.15s; }
+.zone-hit:hover { filter: brightness(1.15); }
+.risk-outline { pointer-events: none; }
+
+/* ── Clothing modal cards ── */
+.clothing-card {
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  background: #fff;
+  padding: 10px;
+  cursor: pointer;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  position: relative;
+}
+.clothing-card.selected {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(46,134,171,0.15);
+}
+.clothing-card .check-badge {
+  position: absolute; top: 8px; right: 8px;
+  width: 20px; height: 20px; border-radius: 50%;
+  background: var(--blue); color: #fff;
+  font-size: 11px; display: flex; align-items: center; justify-content: center;
+  opacity: 0; transition: opacity 0.15s;
+}
+.clothing-card.selected .check-badge { opacity: 1; }
+.clothing-thumb {
+  width: 100%; height: 80px; border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 8px;
+}
+.clothing-card-name { font-size: 12px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
+.clothing-card-clo  { font-size: 11px; color: var(--muted); margin-bottom: 4px; }
+.clothing-card-desc { font-size: 11px; color: var(--muted); line-height: 1.4; }
+
+/* ── Tooltip ── */
+.tooltip-wrap { position: relative; }
+.tooltip-content {
+  display: none;
+  position: absolute; bottom: calc(100% + 6px); left: 50%; transform: translateX(-50%);
+  background: #1a1a2e; color: #fff; font-size: 11px; padding: 6px 10px;
+  border-radius: 6px; white-space: nowrap; z-index: 9999;
+  pointer-events: none; line-height: 1.5;
+}
+.tooltip-wrap:hover .tooltip-content { display: block; }
+
+/* ── Wear list in modal ── */
+.wear-item      { display: flex; align-items: center; justify-content: space-between; padding: 5px 10px; border-radius: 6px; background: #f0f9ff; border: 0.5px solid #bae6fd; font-size: 12px; }
+.wear-item-name { font-weight: 500; color: var(--navy); }
+.wear-item-clo  { color: var(--muted); font-size: 11px; }
+.remove-btn     { background: none; border: none; color: #A32D2D; cursor: pointer; font-size: 14px; line-height: 1; padding: 0 2px; }
+
+.modal-zone-title { font-size: 13px; font-weight: 600; color: var(--navy); }
+.modal-zone-badge { font-size: 11px; padding: 3px 10px; border-radius: 20px; font-weight: 500; }
