@@ -1,0 +1,8 @@
+# Dependencies
+node_modules/
+
+# Environmental variables
+.env
+
+# Editor Files
+.idea/

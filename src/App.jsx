@@ -8,6 +8,7 @@ import Chips            from './components/Chips';
 import EnsembleControls from './components/EnsembleControls';
 import Silhouette       from './components/Silhouette';
 import ClothingModal    from './components/ClothingModal';
+import WeatherModal     from './components/WeatherModal';
 import DetailsPlot      from './components/DetailsPlot';
 
 export default function App() {
@@ -79,6 +80,7 @@ export default function App() {
   // ── Plot / output settings ─────────────────────────────────────────────────
   const [showPlot,      setShowPlot]      = useState(false);
   const [settingsOpen,  setSettingsOpen]  = useState(false);
+  const [weatherOpen,   setWeatherOpen]   = useState(false);
 
   // ── Run thermal model ──────────────────────────────────────────────────────
   const { results, isCalculating, simRows, isPlotting, runPlot } = usePSDA({ temp, humidity, wind, activityWatts, isRest, simTimeHours, selectedItems });
@@ -121,6 +123,11 @@ export default function App() {
     if (items) setSelectedKeysByZone(items);
     // Custom (user-created) ensembles don't have a preset item list,
     // so we leave the current selection intact when items is null.
+  }
+  function handleSaveNew(newName) {
+    setEnsembles(prev => [...prev, newName]);
+    setSelEns(newName);
+    // selectedKeysByZone stays as-is — the new ensemble captures current clothing
   }
   function handleEnsSave(newName) {
     setEnsembles(prev => prev.map(e => e === selEns ? newName : e));
@@ -213,7 +220,17 @@ export default function App() {
           {/* ── Left column ── */}
           <div className="col-12 col-lg-4">
             <div className="card p-3 mb-3">
-              <div className="card-title-label">Environmental Parameters</div>
+              <div className="d-flex align-items-center justify-content-between mb-2" style={{ marginBottom: 0 }}>
+                <div className="card-title-label mb-0">Environmental Parameters</div>
+                <button
+                  className="btn btn-sm btn-outline-secondary"
+                  style={{ fontSize: 11, padding: '2px 10px' }}
+                  onClick={() => setWeatherOpen(true)}
+                >
+                  🌤 Local Weather
+                </button>
+              </div>
+              <div style={{ marginBottom: 12 }} />
               <Slider label="Air Temperature" min={-52} max={5} value={temp} onChange={setTemp} unit="°C"
                 trackStyle={{ background: 'linear-gradient(to right,#3B8BD4,#93c5fd,#fde68a,#f97316,#ef4444)' }} />
               <Slider label="Relative Humidity" min={0} max={100} value={humidity} onChange={setHumidity} unit="%"
@@ -338,7 +355,7 @@ export default function App() {
                 </div>
               </div>
               <EnsembleControls ensembles={ensembles} selected={selEns}
-                onSelect={handleEnsSelect} onSave={handleEnsSave} onDelete={handleEnsDelete} />
+                onSelect={handleEnsSelect} onSave={handleEnsSave} onDelete={handleEnsDelete} onSaveNew={handleSaveNew} />
               {grouped.length === 0 ? (
                 <div style={{ fontSize: 12, color: 'var(--muted)', padding: '8px 0' }}>
                   No clothing selected — click a body zone on the figure above to add items.
@@ -376,6 +393,17 @@ export default function App() {
         </div>
       </div>
 
+
+      {weatherOpen && (
+        <WeatherModal
+          onApply={({ temp: t, humidity: h, wind: w }) => {
+            setTemp(Math.max(-52, Math.min(5, t)));
+            setHumidity(Math.max(0, Math.min(100, h)));
+            setWind(Math.max(0, Math.min(22.4, w)));
+          }}
+          onClose={() => setWeatherOpen(false)}
+        />
+      )}
 
       <ClothingModal
         zone={modalZone}
