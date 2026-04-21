@@ -2,7 +2,7 @@ import { RISK_COLORS } from '../data/constants';
 
 // Shapes for each UI zone. torso_arms combines the torso rect + both arm rects.
 const ZONE_SHAPES = {
-  head:       [{ x:19, y:0,   w:22, h:22, r:11 }],
+  head:       [{ x:19, y:2,   w:22, h:22, r:11 }],
   torso_arms: [
     { x:15, y:25, w:30, h:42, r:3 },   // torso
     { x:2,  y:25, w:11, h:42, r:3 },   // left arm
@@ -10,7 +10,7 @@ const ZONE_SHAPES = {
   ],
   hands: [{ x:2,  y:68, w:11, h:8, r:2 }, { x:47, y:68, w:11, h:8, r:2 }],
   legs:  [{ x:15, y:70, w:13, h:46, r:3 }, { x:32, y:70, w:13, h:46, r:3 }],
-  feet:  [{ x:11, y:114, w:17, h:9, r:3 }, { x:30, y:114, w:17, h:9, r:3 }],
+  feet:  [{ x:13, y:117, w:17, h:9, r:3 }, { x:31, y:117, w:17, h:9, r:3 }],
 };
 
 // Map each silhouette zone to the index in zoneRiskRows:
@@ -79,7 +79,7 @@ export default function Silhouette({ selectedKeysByZone, onZoneClick, zoneRiskRo
 
   return (
     <div className="figure-wrap" style={{ width: 82 }}>
-      <svg width="82" viewBox="0 0 60 130" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <svg width="82" viewBox="-1 0 62 130" fill="none" xmlns="http://www.w3.org/2000/svg">
         {zones.map(z => (
           <ZoneShape
             key={z}
