@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react';
 import { ACTIVITIES, ACTIVITY_MODES, EXERTION_WATTS, SIM_TIME_REST, SIM_TIME_ACTIVE, ZONE_LABELS, ZONE_ORDER, RISK_BADGES, getRiskStatus, formatRiskTime } from './data/constants';
+import { UNIT_SYSTEMS } from './utils/unitConversions';
 import { DEFAULT_ENSEMBLES, DEFAULT_ENSEMBLE_NAMES, getDefaultEnsembleItems } from './data/ensembles';
 import { useClothingData, itemKey, zonePrimaryClo } from './hooks/useClothingData';
 import { usePSDA } from './hooks/usePSDA';
@@ -16,9 +17,27 @@ export default function App() {
   const { byZone, isLoading: clothingLoading, error: clothingError } = useClothingData();
 
   // ── Environmental state ────────────────────────────────────────────────────
-  const [temp,     setTemp]     = useState(-12);
   const [humidity, setHumidity] = useState(78);
-  const [wind,     setWind]     = useState(1);
+
+  // ── Unit system ────────────────────────────────────────────────────────────
+  const [unitSystem,   setUnitSystem]   = useState('SI'); // 'SI' | 'Imperial'
+  const units = UNIT_SYSTEMS[unitSystem];
+
+  // Display values stored in the active unit; model always receives SI
+  const [tempDisplay, setTempDisplay] = useState(-12); // °C or °F
+  const [windDisplay, setWindDisplay] = useState(1);   // m/s or mph
+
+  function handleUnitSystemChange(newSystem) {
+    const prev = UNIT_SYSTEMS[unitSystem];
+    const next = UNIT_SYSTEMS[newSystem];
+    setTempDisplay(next.temperature.fromSI(prev.temperature.toSI(tempDisplay)));
+    setWindDisplay(next.wind.fromSI(prev.wind.toSI(windDisplay)));
+    setUnitSystem(newSystem);
+  }
+
+  // SI values passed to the model
+  const temp = units.temperature.toSI(tempDisplay);
+  const wind = units.wind.toSI(windDisplay);
 
   // ── Activity state ─────────────────────────────────────────────────────────
   const [activityMode,  setActivityMode]  = useState('Active');  // 'Rest' | 'Active'
@@ -204,10 +223,35 @@ export default function App() {
             {settingsOpen && (
               <div
                 className="dropdown-menu show"
-                style={{ right: 0, left: 'auto', minWidth: 200, padding: '10px 14px', fontSize: 12 }}
+                style={{ right: 0, left: 'auto', minWidth: 220, padding: '10px 14px', fontSize: 12 }}
                 onMouseLeave={() => setSettingsOpen(false)}
               >
-                <div style={{ fontSize: 11, color: 'var(--muted)' }}>No settings yet.</div>
+                <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--muted)', marginBottom: 8, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                  Units
+                </div>
+                <div style={{ display: 'flex', border: '1.5px solid #c0cfe8', borderRadius: 8, overflow: 'hidden' }}>
+                  {['SI', 'Imperial'].map((sys, i) => (
+                    <button
+                      key={sys}
+                      onClick={() => handleUnitSystemChange(sys)}
+                      style={{
+                        flex: 1,
+                        fontSize: 11,
+                        fontWeight: unitSystem === sys ? 600 : 400,
+                        padding: '5px 0',
+                        cursor: 'pointer',
+                        border: 'none',
+                        borderLeft: i > 0 ? '1.5px solid #c0cfe8' : 'none',
+                        borderRadius: 0,
+                        background: unitSystem === sys ? '#2a6db5' : 'transparent',
+                        color: unitSystem === sys ? '#fff' : 'var(--muted)',
+                        transition: 'background 0.15s, color 0.15s',
+                      }}
+                    >
+                      {sys === 'SI' ? 'SI  (°C, m/s)' : 'Imperial  (°F, mph)'}
+                    </button>
+                  ))}
+                </div>
               </div>
             )}
           </div>
@@ -231,11 +275,17 @@ export default function App() {
                 </button>
               </div>
               <div style={{ marginBottom: 12 }} />
-              <Slider label="Air Temperature" min={-52} max={5} value={temp} onChange={setTemp} unit="°C"
+              <Slider label="Air Temperature"
+                min={units.temperature.min} max={units.temperature.max} step={units.temperature.step}
+                value={units.temperature.format(tempDisplay)} onChange={setTempDisplay}
+                unit={units.temperature.unit}
                 trackStyle={{ background: 'linear-gradient(to right,#3B8BD4,#93c5fd,#fde68a,#f97316,#ef4444)' }} />
               <Slider label="Relative Humidity" min={0} max={100} value={humidity} onChange={setHumidity} unit="%"
                 trackStyle={{ background: 'linear-gradient(to right,#fef9c3,#7dd3fc,#1e40af)' }} />
-              <Slider label="Wind Speed" min={0} max={22.4} step={0.1} value={wind} onChange={setWind} unit="m/s"
+              <Slider label="Wind Speed"
+                min={units.wind.min} max={units.wind.max} step={units.wind.step}
+                value={units.wind.format(windDisplay)} onChange={setWindDisplay}
+                unit={units.wind.unit}
                 trackStyle={{ background: 'linear-gradient(to right,#e0f2fe,#7dd3fc,#0369a1,#1e3a5f)' }} />
             </div>
 
@@ -397,9 +447,12 @@ export default function App() {
       {weatherOpen && (
         <WeatherModal
           onApply={({ temp: t, humidity: h, wind: w }) => {
-            setTemp(Math.max(-52, Math.min(5, t)));
+            // Weather data arrives in SI; clamp to SI range then convert to display unit
+            const clampedT = Math.max(-52, Math.min(5, t));
+            const clampedW = Math.max(0, Math.min(22.4, w));
+            setTempDisplay(units.temperature.fromSI(clampedT));
             setHumidity(Math.max(0, Math.min(100, h)));
-            setWind(Math.max(0, Math.min(22.4, w)));
+            setWindDisplay(units.wind.fromSI(clampedW));
           }}
           onClose={() => setWeatherOpen(false)}
         />
