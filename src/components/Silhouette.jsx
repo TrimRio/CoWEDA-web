@@ -79,7 +79,7 @@ export default function Silhouette({ selectedKeysByZone, onZoneClick, zoneRiskRo
 
   return (
     <div className="figure-wrap" style={{ width: 82 }}>
-      <svg width="82" viewBox="-1 0 62 130" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <svg width="82" viewBox="-1 0 62 130" fill="none">
         {zones.map(z => (
           <ZoneShape
             key={z}

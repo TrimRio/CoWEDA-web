@@ -459,6 +459,23 @@ export default function App() {
                                       : `${zonePrimaryClo(item, g.zone).toFixed(2)} clo`;
                                   return (
                                       <div key={itemKey(item)} className="clothing-row">
+                                        <div style={{
+                                          width: 28, height: 28, flexShrink: 0,
+                                          borderRadius: 4, overflow: 'hidden',
+                                          background: '#e0f2fe', marginRight: 8,
+                                          display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                        }}>
+                                          <img
+                                            src={`/clothing/${item.image}`}
+                                            alt={item.itemDescription}
+                                            style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                                            onError={e => {
+                                              e.target.style.display = 'none';
+                                              e.target.nextSibling.style.display = 'block';
+                                            }}
+                                          />
+                                          <span style={{ display: 'none', fontSize: 14, lineHeight: 1 }}>🧥</span>
+                                        </div>
                                         <span className="clothing-name flex-grow-1">{item.itemDescription}</span>
                                         <span className="clothing-ins">{cloStr}</span>
                                       </div>
