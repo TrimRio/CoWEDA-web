@@ -197,7 +197,7 @@ export default function App() {
   return (
       <>
         <nav className="topbar d-flex align-items-center justify-content-between">
-          <span className="logo">CoWEDA</span>
+          <span className="logo">Cold Weather Ensemble Decision Aid Web Application (CoWEDA-web)</span>
           <div className="d-flex gap-2 align-items-center">
 
             {/* Plot button */}

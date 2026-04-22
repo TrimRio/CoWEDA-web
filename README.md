@@ -1,6 +1,6 @@
 # CoWEDA Dashboard
 
-Cold Weather Dress Assessment dashboard built with React + Vite. Simulates physiological heat/cold stress using the PSDA (Predicted Survival Duration Algorithm) model, based on environmental conditions, activity level, and selected clothing ensembles.
+The Cold Weather Ensemble Decision Aid web application (CoWEDA-web) simulates human thermoregulation using the Six Cylinder Thermoregulation Model (SCTM) and user input for environmental conditions, activity level, and selected clothing ensembles. This web application is built with React + Vite.
 
 ## Project Structure
 
