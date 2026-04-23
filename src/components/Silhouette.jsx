@@ -51,7 +51,7 @@ function ZoneShape({ zoneKey, onClick, selectedKeys, riskStatus }) {
           <rect x={r.x} y={r.y} width={r.w} height={r.h} rx={r.r}
             fill={fillColor}
             fillOpacity={fillOpacity} />
-          {/* Clothing icon on first shape only */}
+          {/* clothing icon on first shape only */}
           {hasItems && i === 0 && (
             <text x={r.x + r.w / 2} y={r.y + r.h / 2 + 1}
               textAnchor="middle" dominantBaseline="central"

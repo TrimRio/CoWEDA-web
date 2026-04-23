@@ -82,7 +82,7 @@ export default function App() {
   const [ensembles, setEnsembles] = useState(DEFAULT_ENSEMBLE_NAMES);
   const [selEns,    setSelEns]    = useState(DEFAULT_ENSEMBLE_NAMES[0]);
 
-  // ── Clothing selection ─────────────────────────────────────────────────────
+  // ── clothing selection ─────────────────────────────────────────────────────
   const emptyZones = { head: [], torso_arms: [], hands: [], legs: [], feet: [] };
   const [selectedKeysByZone, setSelectedKeysByZone] = useState(
     () => getDefaultEnsembleItems(DEFAULT_ENSEMBLE_NAMES[0]) ?? emptyZones

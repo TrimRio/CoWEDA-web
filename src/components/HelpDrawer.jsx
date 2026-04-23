@@ -5,7 +5,7 @@ const SECTIONS = [
   { id: 'overview',      label: 'Overview' },
   { id: 'environment',   label: 'Environmental Parameters' },
   { id: 'activity',      label: 'Activity Settings' },
-  { id: 'clothing',      label: 'Clothing & Ensembles' },
+  { id: 'clothing',      label: 'clothing & Ensembles' },
   { id: 'risk',          label: 'Risk Assessment' },
   { id: 'plot',          label: 'Details Plot' },
   { id: 'weather',       label: 'Local Weather Import' },
@@ -323,7 +323,7 @@ export default function HelpDrawer({ onClose }) {
               <PlaceholderFigure label="Figure 3 — Activity panel with exertion chips and metabolic rate input" height={140} />
             </section>
 
-            {/* ── Clothing & Ensembles ── */}
+            {/* ── clothing & Ensembles ── */}
             <section style={{ marginBottom: 36 }}>
               <SectionHeading id="clothing">Clothing &amp; Ensembles</SectionHeading>
               <P>
@@ -499,7 +499,7 @@ export default function HelpDrawer({ onClose }) {
               <div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginTop: 8 }}>
                 {[
                   'Lorem I, Ipsum D. Predicted survival duration in cold environments. J Thermal Biol. 2019;84:112–121.',
-                  'Dolor S, Amet C. Clothing insulation database for cold weather risk assessment. ASTM International. 2017.',
+                  'Dolor S, Amet C. clothing insulation database for cold weather risk assessment. ASTM International. 2017.',
                   'Consectetur A, Adipiscing E. Validation of the PSDA thermoregulation model. Arctic Med Res. 2021;58(3):44–58.',
                 ].map((ref, i) => (
                   <div key={i} style={{ fontSize: 12, color: 'var(--muted)', lineHeight: 1.6, padding: '8px 12px', background: '#f9fafb', border: '0.5px solid var(--border)', borderRadius: 7 }}>

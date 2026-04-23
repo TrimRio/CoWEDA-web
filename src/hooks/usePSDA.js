@@ -97,7 +97,7 @@ export function usePSDA({ temp, humidity, wind, activityWatts, isRest, simTimeHo
     [selectedItems]
   );
 
-  // Clothing values for the exposed-skin run: same ensemble but no foot items
+  // clothing values for the exposed-skin run: same ensemble but no foot items
   const { RH2: RH2_exposed, PIM2: PIM2_exposed } = useMemo(
     () => calculateEnsembleValues(selectedItems.filter(i => i.bodySection !== 5)),
     [selectedItems]
