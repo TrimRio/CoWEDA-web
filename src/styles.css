@@ -67,7 +67,7 @@ body {
 .badge-ok      { background: #dcfce7; color: #27500A; }
 .badge-neutral { background: #f3f4f6; color: var(--muted); }
 
-/* ── clothing list ── */
+/* ── Clothing list ── */
 .zone-group-label { font-size: 10px; font-weight: 600; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px; padding-left: 2px; }
 .clothing-row  { display: flex; align-items: center; justify-content: space-between; padding: 6px 10px; border-radius: 7px; border: 0.5px solid var(--border); background: #f9fafb; }
 .clothing-name { font-size: 12px; font-weight: 500; }
@@ -85,7 +85,7 @@ hr.soft { border-color: var(--border); opacity: 1; margin: 12px 0; }
 .zone-hit:hover { filter: brightness(1.15); }
 .risk-outline { pointer-events: none; }
 
-/* ── clothing modal cards ── */
+/* ── Clothing modal cards ── */
 .clothing-card {
   border: 1.5px solid var(--border);
   border-radius: 10px;

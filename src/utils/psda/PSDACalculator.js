@@ -192,7 +192,7 @@ export class PSDACalculator {
   /** @type {number[][]} */ X                                         = Array.from({ length: 6 }, () => new Array(6).fill(0));
   /** @type {number[][]} */ All_Layers_Heat_Conductivity_WmK         = Array.from({ length: 4 }, () => new Array(6).fill(0));
 
-  // ── clothing arrays ─────────────────────────────────────────────────────────
+  // ── Clothing arrays ─────────────────────────────────────────────────────────
   /** @type {number[]} */ KCL   = new Array(6).fill(0);
   /** @type {number[]} */ FCL   = [1, 1, 1, 1, 1, 1];
   /** @type {number[]} */ FCLS  = new Array(6).fill(0);
@@ -1141,7 +1141,7 @@ export class PSDACalculator {
         Body_fat:     this.Body_Fat_Percent,
         Clothed:      this.Is_Clothed ? 1 : 2,
         Immersed:     this.is_air_water,
-        // clothing thermal resistance (clo) — original input values
+        // Clothing thermal resistance (clo) — original input values
         Iclo_head:    this._iclo_orig[0],
         Iclo_torso:   this._iclo_orig[1],
         Iclo_arm:     this._iclo_orig[2],

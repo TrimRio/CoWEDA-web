@@ -1,5 +1,5 @@
 /**
- * clothing ensemble calculations — converted from clothing.cs
+ * Clothing ensemble calculations — converted from clothing.cs
  *
  * Takes an array of selected clothing items and computes the combined
  * thermal resistance (RH2) and evaporative resistance (PIM2) arrays
@@ -31,7 +31,7 @@ const LAYERING_FACTORS = {
  * Calculates combined RH2 (thermal resistance) and PIM2 (evaporative resistance)
  * arrays from a list of selected clothing items.
  *
- * @param {Object[]} selectedItems - clothing items selected by the user.
+ * @param {Object[]} selectedItems - Clothing items selected by the user.
  *   Each item should have the shape from clothingData.js (Rcl_*, Recl_*, etc.)
  * @param {boolean} [isWet=false] - Whether to apply wet clothing coefficients.
  * @returns {{ RH2: number[], PIM2: number[] }}

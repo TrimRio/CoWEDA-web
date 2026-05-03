@@ -103,23 +103,6 @@ export default function ClothingModal({ zone, selectedKeys, onToggle, onClose, i
                       if (!item) return null;
                       return (
                         <div key={key} className="wear-item">
-                          <div style={{
-                            width: 32, height: 32, flexShrink: 0,
-                            borderRadius: 5, overflow: 'hidden',
-                            background: '#e0f2fe', marginRight: 8,
-                            display: 'flex', alignItems: 'center', justifyContent: 'center',
-                          }}>
-                            <img
-                              src={`/clothing/${item.image}`}
-                              alt={item.itemDescription}
-                              style={{ width: '100%', height: '100%', objectFit: 'contain' }}
-                              onError={e => {
-                                e.target.style.display = 'none';
-                                e.target.nextSibling.style.display = 'block';
-                              }}
-                            />
-                            <span style={{ display: 'none', fontSize: 16, lineHeight: 1 }}>🧥</span>
-                          </div>
                           <span className="wear-item-name flex-grow-1">{item.itemDescription}</span>
                           <span className="wear-item-clo me-2">{itemCloStr(item, zone)}</span>
                           <button className="remove-btn" onClick={() => onToggle(zone, key)}>✕</button>

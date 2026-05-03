@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import Papa from 'papaparse';
+import { API, useAuth } from '../context/AuthContext';
 
 // ── Zone mapping ──────────────────────────────────────────────────────────────
 // Maps bodySection ID from CSV to the zone key used in the UI.
@@ -82,14 +83,18 @@ export function useClothingData() {
   const [items,     setItems]     = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error,     setError]     = useState(null);
+  const { token } = useAuth();
 
   useEffect(() => {
     setIsLoading(true);
     setError(null);
 
-    fetch('/CIEdata.csv')
+    const token = localStorage.getItem('coweda_token');
+    fetch(`${API}/clothing-data`, {
+      headers: token ? { Authorization: `Bearer ${token}` } : {},
+    })
       .then(response => {
-        if (!response.ok) throw new Error(`Failed to load CIEdata.csv (${response.status})`);
+        if (!response.ok) throw new Error(`Failed to load clothing data (${response.status})`);
         return response.text();
       })
       .then(csvText => {
@@ -118,7 +123,7 @@ export function useClothingData() {
         setError(err.message);
       })
       .finally(() => setIsLoading(false));
-  }, []);
+  }, [token]);
 
   const byZone = useMemo(() =>
     items.reduce((acc, item) => {

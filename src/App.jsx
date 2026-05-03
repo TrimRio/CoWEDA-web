@@ -1,9 +1,10 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { ACTIVITIES, ACTIVITY_MODES, EXERTION_WATTS, SIM_TIME_REST, SIM_TIME_ACTIVE, ZONE_LABELS, ZONE_ORDER, RISK_BADGES, getRiskStatus, formatRiskTime } from './data/constants';
 import { UNIT_SYSTEMS } from './utils/unitConversions';
-import { DEFAULT_ENSEMBLES, DEFAULT_ENSEMBLE_NAMES, getDefaultEnsembleItems } from './data/ensembles';
 import { useClothingData, itemKey, zonePrimaryClo } from './hooks/useClothingData';
+import { useEnsembles } from './hooks/useEnsembles';
 import { usePSDA } from './hooks/usePSDA';
+import { useAuth } from './context/AuthContext';
 import Slider           from './components/Slider';
 import Chips            from './components/Chips';
 import EnsembleControls from './components/EnsembleControls';
@@ -12,7 +13,7 @@ import ClothingModal    from './components/ClothingModal';
 import WeatherModal     from './components/WeatherModal';
 import DetailsPlot      from './components/DetailsPlot';
 import HelpDrawer       from './components/HelpDrawer';
-
+import LoginModal       from './components/LoginModal';
 export default function App() {
   // ── Load clothing data from CSV ────────────────────────────────────────────
   const { byZone, isLoading: clothingLoading, error: clothingError } = useClothingData();
@@ -78,15 +79,26 @@ export default function App() {
     if (match) setExertion(match[0]);
   }
 
-  // ── Ensemble state ─────────────────────────────────────────────────────────
-  const [ensembles, setEnsembles] = useState(DEFAULT_ENSEMBLE_NAMES);
-  const [selEns,    setSelEns]    = useState(DEFAULT_ENSEMBLE_NAMES[0]);
+  // ── Auth ──────────────────────────────────────────────────────────────────
+  const { isLoggedIn, username, logout } = useAuth();
+  const [showLogin, setShowLogin] = useState(false);
 
-  // ── clothing selection ─────────────────────────────────────────────────────
+  // ── Ensemble state (from backend) ──────────────────────────────────────────
+  const { ensembles: ensembleObjects, createEnsemble, updateEnsemble, deleteEnsemble } = useEnsembles();
+  const ensembles = ensembleObjects.map(e => e.name);
+  const [selEns, setSelEns] = useState('');
+
+  // When ensembles load, auto-select the first one
+  useEffect(() => {
+    if (ensembleObjects.length > 0 && !selEns) {
+      setSelEns(ensembleObjects[0].name);
+      setSelectedKeysByZone(ensembleObjects[0].items);
+    }
+  }, [ensembleObjects]);
+
+  // ── Clothing selection ─────────────────────────────────────────────────────
   const emptyZones = { head: [], torso_arms: [], hands: [], legs: [], feet: [] };
-  const [selectedKeysByZone, setSelectedKeysByZone] = useState(
-    () => getDefaultEnsembleItems(DEFAULT_ENSEMBLE_NAMES[0]) ?? emptyZones
-  );
+  const [selectedKeysByZone, setSelectedKeysByZone] = useState(emptyZones);
   const [modalZone, setModalZone] = useState(null);
 
   // ── Flatten selected items for the calculator ──────────────────────────────
@@ -140,24 +152,44 @@ export default function App() {
   }
   function handleEnsSelect(name) {
     setSelEns(name);
-    const items = getDefaultEnsembleItems(name);
-    if (items) setSelectedKeysByZone(items);
-    // Custom (user-created) ensembles don't have a preset item list,
-    // so we leave the current selection intact when items is null.
+    const found = ensembleObjects.find(e => e.name === name);
+    if (found) setSelectedKeysByZone(found.items);
   }
-  function handleSaveNew(newName) {
-    setEnsembles(prev => [...prev, newName]);
-    setSelEns(newName);
-    // selectedKeysByZone stays as-is — the new ensemble captures current clothing
+  async function handleSaveNew(newName) {
+    try {
+      await createEnsemble(newName, selectedKeysByZone);
+      setSelEns(newName);
+    } catch (err) {
+      alert(err.message);
+    }
   }
-  function handleEnsSave(newName) {
-    setEnsembles(prev => prev.map(e => e === selEns ? newName : e));
-    setSelEns(newName);
+  async function handleEnsSave(newName) {
+    const found = ensembleObjects.find(e => e.name === selEns);
+    if (!found) return;
+    try {
+      await updateEnsemble(found.id, newName, selectedKeysByZone);
+      setSelEns(newName);
+    } catch (err) {
+      alert(err.message);
+    }
   }
-  function handleEnsDelete() {
+  async function handleEnsDelete() {
     if (ensembles.length <= 1) return;
-    const next = ensembles.filter(e => e !== selEns);
-    setEnsembles(next); setSelEns(next[0]);
+    const found = ensembleObjects.find(e => e.name === selEns);
+    if (!found) return;
+    try {
+      await deleteEnsemble(found.id);
+      const remaining = ensembleObjects.filter(e => e.id !== found.id);
+      if (remaining.length > 0) {
+        setSelEns(remaining[0].name);
+        setSelectedKeysByZone(remaining[0].items);
+      } else {
+        setSelEns('');
+        setSelectedKeysByZone(emptyZones);
+      }
+    } catch (err) {
+      alert(err.message);
+    }
   }
 
   // ── Derived display data ───────────────────────────────────────────────────
@@ -182,14 +214,37 @@ export default function App() {
   }
 
   if (clothingError) {
+    const isUnauthed = clothingError.includes('401');
     return (
-      <div className="d-flex align-items-center justify-content-center" style={{ height: '100vh' }}>
-        <div style={{ textAlign: 'center', color: 'var(--danger)' }}>
-          <strong>Failed to load CIEdata.csv</strong>
-          <p style={{ fontSize: 12, color: 'var(--muted)', marginTop: 8 }}>{clothingError}</p>
-          <p style={{ fontSize: 12, color: 'var(--muted)' }}>Make sure CIEdata.csv is in the <code>public/</code> folder.</p>
+      <>
+        <nav className="topbar d-flex align-items-center justify-content-between">
+          <span className="logo">Cold Weather Ensemble Decision Aid Web Application (CoWEDA-web)</span>
+          <button
+            className="btn btn-sm btn-outline-light"
+            style={{fontSize: 11, padding: '4px 10px'}}
+            onClick={() => setShowLogin(true)}
+          >
+            Sign In
+          </button>
+        </nav>
+        <div className="d-flex align-items-center justify-content-center" style={{ height: 'calc(100vh - 48px)' }}>
+          <div style={{ textAlign: 'center' }}>
+            {isUnauthed ? (
+              <>
+                <strong style={{ color: 'var(--text)' }}>Sign in to use CoWEDA</strong>
+                <p style={{ fontSize: 12, color: 'var(--muted)', marginTop: 8 }}>Please sign in or create an account to continue.</p>
+                <button className="btn btn-primary btn-sm mt-2" onClick={() => setShowLogin(true)}>Sign In</button>
+              </>
+            ) : (
+              <>
+                <strong style={{ color: 'var(--danger)' }}>Failed to load clothing data</strong>
+                <p style={{ fontSize: 12, color: 'var(--muted)', marginTop: 8 }}>{clothingError}</p>
+              </>
+            )}
+          </div>
         </div>
-      </div>
+        <LoginModal show={showLogin} onClose={() => setShowLogin(false)} />
+      </>
     );
   }
 
@@ -197,8 +252,32 @@ export default function App() {
   return (
       <>
         <nav className="topbar d-flex align-items-center justify-content-between">
-          <span className="logo">Cold Weather Ensemble Decision Aid Web Application (CoWEDA-web)</span>
+          <span className="logo">CoWEDA</span>
+          {isLoggedIn && (
+            <span className="text-white-50 small ms-2" style={{fontSize: 11}}>
+              {username}
+            </span>
+          )}
           <div className="d-flex gap-2 align-items-center">
+
+            {/* Auth button */}
+            {isLoggedIn ? (
+              <button
+                className="btn btn-sm btn-outline-light"
+                style={{fontSize: 11, padding: '4px 10px'}}
+                onClick={logout}
+              >
+                Sign Out
+              </button>
+            ) : (
+              <button
+                className="btn btn-sm btn-outline-light"
+                style={{fontSize: 11, padding: '4px 10px'}}
+                onClick={() => setShowLogin(true)}
+              >
+                Sign In
+              </button>
+            )}
 
             {/* Plot button */}
             <button
@@ -459,22 +538,17 @@ export default function App() {
                                       : `${zonePrimaryClo(item, g.zone).toFixed(2)} clo`;
                                   return (
                                       <div key={itemKey(item)} className="clothing-row">
-                                        <div style={{
-                                          width: 28, height: 28, flexShrink: 0,
-                                          borderRadius: 4, overflow: 'hidden',
-                                          background: '#e0f2fe', marginRight: 8,
-                                          display: 'flex', alignItems: 'center', justifyContent: 'center',
-                                        }}>
+                                        <div style={{ width: 32, height: 32, marginRight: 8, flexShrink: 0, position: 'relative' }}>
                                           <img
                                             src={`/clothing/${item.image}`}
                                             alt={item.itemDescription}
-                                            style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                                            style={{ width: 32, height: 32, objectFit: 'contain', borderRadius: 4 }}
                                             onError={e => {
                                               e.target.style.display = 'none';
-                                              e.target.nextSibling.style.display = 'block';
+                                              e.target.nextSibling.style.display = 'flex';
                                             }}
                                           />
-                                          <span style={{ display: 'none', fontSize: 14, lineHeight: 1 }}>🧥</span>
+                                          <div style={{ display: 'none', alignItems: 'center', justifyContent: 'center', width: 32, height: 32, fontSize: 18 }}>🧥</div>
                                         </div>
                                         <span className="clothing-name flex-grow-1">{item.itemDescription}</span>
                                         <span className="clothing-ins">{cloStr}</span>
@@ -528,6 +602,7 @@ export default function App() {
         )}
 
         {helpOpen && <HelpDrawer onClose={() => setHelpOpen(false)}/>}
+        <LoginModal show={showLogin} onClose={() => setShowLogin(false)} />
       </>
   );
 }
