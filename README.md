@@ -7,23 +7,6 @@ user interface and SCTM calculations, and a Node.js and Express backend providin
 clothing data and user ensemble management, with ensemble data persisted in a MongoDB database.
 
 ## Project Structure
-
-```
-src/
-├── main.jsx                  # App entry point — mounts React, imports CSS
-├── App.jsx                   # Main layout and state management
-├── styles.css                # All global CSS (extracted from original HTML)
-├── data/
-│   └── constants.js          # Static data: ACTIVITIES, CLOTHING_DB, ZONES_RISK, etc.
-└── components/
-    ├── Slider.jsx             # Range slider with colored track
-    ├── Chips.jsx              # Pill-button toggle group
-    ├── EnsembleControls.jsx   # Ensemble select / rename / delete
-    ├── Silhouette.jsx         # SVG body figure with clickable zones
-    └── ClothingModal.jsx      # Zone clothing picker modal
-```
-
-## updated structure
 ```
 CoWEDA-web/
 ├── index.html                        # HTML entry point
