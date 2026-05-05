@@ -14,7 +14,10 @@ const PORT = process.env.PORT || 3001;
 const JWT_SECRET = process.env.JWT_SECRET || 'coweda-dev-secret-change-in-production';
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/coweda';
 
-app.use(cors({ origin: 'http://localhost:5173', credentials: true }));
+app.use(cors({
+  origin: process.env.ALLOWED_ORIGIN || 'http://localhost:5173',
+  credentials: true
+}));
 app.use(express.json());
 
 // ── Mongoose schemas ──────────────────────────────────────────────────────────
